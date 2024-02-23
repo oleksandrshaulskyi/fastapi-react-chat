@@ -12,3 +12,7 @@ async def lifespan(app: FastAPI):
 
 
 application = FastAPI(lifespan=lifespan)
+
+@application.get('/')
+async def index():
+    return {'message': 'This is the chat app'}
