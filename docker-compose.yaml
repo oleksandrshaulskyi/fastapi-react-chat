@@ -41,6 +41,8 @@ services:
     build:
       context: .
       dockerfile: ./backend/chat_app/Dockerfile
+    volumes:
+      - ./backend/chat_app/application:/backend/chat_app/application
     restart: always
     ports:
       - '8000:8000'
@@ -48,6 +50,22 @@ services:
       - '8000'
     depends_on:
       - chat_app_database
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    container_name: celery
+    build:
+      context: .
+      dockerfile: ./backend/chat_app/Dockerfile
+    volumes:
+      - ./backend/chat_app/application:/backend/chat_app/applicatiom
+    depends_on:
+      - chat_app
+      - redis
 
   nginx:
     container_name: nginx
